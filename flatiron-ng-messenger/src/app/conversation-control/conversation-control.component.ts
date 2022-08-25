@@ -36,7 +36,8 @@ export class ConversationControlComponent implements OnInit {
   constructor(private router: Router) { }
 
   onNewMessage() {
-    this.router.navigate(['contactList']);
+    console.log("reached")
+    this.router.navigate(["contactList"]);
   }
 
   ngOnInit(): void {

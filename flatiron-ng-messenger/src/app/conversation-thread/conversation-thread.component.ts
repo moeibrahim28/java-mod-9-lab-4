@@ -10,8 +10,10 @@ import { MessagingService } from '../messaging.service';
 export class ConversationThreadComponent implements OnInit {
   senderMessages: Message[];
   userMessages: Message[];
-
+  newMessage:Message;
+  
   constructor(private messagingSvce: MessagingService) {}
+
 
   ngOnInit(): void {
     this.senderMessages = this.messagingSvce.getSenderMessages();
@@ -24,5 +26,6 @@ export class ConversationThreadComponent implements OnInit {
       console.log("********** user messages have changed");
       this.userMessages = messages;
     });
+
   }
 }

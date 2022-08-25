@@ -7,10 +7,21 @@ import { AppComponent } from './app.component';
 import { ApplicationComponent } from './application/application.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
 
+
 const routes: Routes = [
-  { path: "", component: ApplicationComponent },
   { path: "contactList", component: ContactListComponent },
+  { path: "**", redirectTo:"1"},
+  { path: ":id", component: ApplicationComponent },
+  
+  
+  
 ];
+// const routes: Routes = [
+//   { path: ":id", component: ApplicationComponent },
+//   // { path: "**", redirectTo:"1"},
+//   { path: "contactList", component: ContactListComponent }
+
+// ];
 
 @NgModule({
   imports: [

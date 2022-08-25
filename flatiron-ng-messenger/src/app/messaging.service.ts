@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { LoggingService } from './logging.service';
 import { Message } from './message';
 
@@ -13,7 +15,7 @@ export class MessagingService {
 
   getSenderMessages() {
     this.httpClient
-      .get<Message[]>("http://localhost:8080/api/get-sender-messages")
+      .get<Message[]>('http://localhost:8080/api/get-sender-messages')
       .subscribe((messages: Message[]) => {
         console.log(messages);
         this.senderMessages = messages;
@@ -24,7 +26,7 @@ export class MessagingService {
 
   getUserMessages() {
     this.httpClient
-      .get<Message[]>("http://localhost:8080/api/get-user-messages")
+      .get<Message[]>('http://localhost:8080/api/get-user-messages')
       .subscribe((messages: Message[]) => {
         console.log(messages);
         this.userMessages = messages;
@@ -33,22 +35,31 @@ export class MessagingService {
     return this.userMessages.slice();
   }
 
-  addUserMessage(newMessage: Message) {
-    this.httpClient.post<Message[]>("http://localhost:8080/api/add-user-message", newMessage).subscribe(
-        (messages: Message[]) => {
-            console.log(messages);
-            this.userMessages = messages;
-            this.userMessagesChanged.emit(this.userMessages);
-        }
-    )
+  addUserMessage(newMessageString: string, conversationID:number) {
+    console.log(newMessageString);
+    let newMessage: Message = new Message(
+      this.userMessages[0].sender,
+      newMessageString,
+      conversationID,
+      this.userMessages.length
+    );
+    console.log(newMessage);
+    this.httpClient
+      .post<Message[]>('http://localhost:8080/api/add-user-message', newMessage)
+      .subscribe((messages: Message[]) => {
+        console.log(messages);
+        this.userMessages = messages;
+        this.userMessagesChanged.emit(this.userMessages);
+      });
     this.userMessages.push(newMessage);
     this.userMessagesChanged.emit(this.userMessages.slice());
-}
+  }
 
   constructor(
     private loggingSvce: LoggingService,
     private httpClient: HttpClient
   ) {
-    loggingSvce.log("Messaging Data Service constructor completed");
+    loggingSvce.log('Messaging Data Service constructor completed');
+    
   }
 }

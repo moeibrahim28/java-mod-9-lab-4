@@ -62,6 +62,15 @@ public class MessagingController {
         userMessages.add(newMessage);
         return userMessages;
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/api/delete-user-message")
+    public List<Message> deleteUserMessage(@RequestBody Message[] messages) {
+
+        userMessages.clear();
+        userMessages.addAll(List.of(messages));
+        return userMessages;
+    }
 }
 
 class Message {

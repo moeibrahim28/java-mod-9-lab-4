@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Message } from '../message';
+import { MessagingService } from '../messaging.service';
 
 @Component({
   selector: 'app-user-message',
@@ -13,7 +14,11 @@ export class UserMessageComponent implements OnInit {
     conversationId: 1,
     sequenceNumber: 0,
   };
-  constructor() { }
+  constructor(private messagingService: MessagingService) { }
+
+  deleteMessage(message:Message){
+    this.messagingService.deleteUserMessage(message)
+  }
 
   ngOnInit(): void {
   }

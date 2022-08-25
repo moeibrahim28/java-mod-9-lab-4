@@ -55,6 +55,19 @@ export class MessagingService {
     this.userMessagesChanged.emit(this.userMessages.slice());
   }
 
+  deleteUserMessage(message:Message){
+    this.userMessages.splice(this.userMessages.indexOf(message),1)
+
+    this.httpClient
+      .put<Message[]>('http://localhost:8080/api/delete-user-message', this.userMessages)
+      .subscribe((messages: Message[]) => {
+                console.log(messages);
+        this.getUserMessages();
+        this.userMessagesChanged.emit(this.userMessages);
+      });
+    this.userMessagesChanged.emit(this.userMessages.slice());
+  }
+
   constructor(
     private loggingSvce: LoggingService,
     private httpClient: HttpClient
